@@ -29,3 +29,7 @@ This is the QuickPay Sudan payment gateway plugin for WooCommerce. Allows you to
        -  Back Approved URL
        -  Back Cancel URL
        -  Back Decline URL
+
+![alt text](https://github.com/2shraf1/-QuickPay-Payment-Gateways-Woocommerce/blob/main/quickpay1.png)
+
+![alt text](https://github.com/2shraf1/-QuickPay-Payment-Gateways-Woocommerce/blob/main/quickpay2.png)
