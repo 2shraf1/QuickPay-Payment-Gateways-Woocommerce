@@ -1,4 +1,4 @@
-# -QuickPay-Payment-Gateways-Woocommerce
+# QuickPay-Payment-Gateways-Woocommerce
  QuickPay Payment Gateways Sudan
  
 Accepts payments with the QuickPay Payment Gateway for WooCommerce
