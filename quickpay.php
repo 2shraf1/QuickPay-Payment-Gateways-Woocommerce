@@ -2,7 +2,7 @@
 /*
 Plugin Name: Quickpay
 Description:Quickpay Payment Gateway for WooCommerce
-Version: beta
+Version: 1
 Author: Ashraf Eltayeb
 Author URI: https://ashraf.cc
 Tags: payment, online payment, woocommerce,Quickpay, Sudan payment gateway
