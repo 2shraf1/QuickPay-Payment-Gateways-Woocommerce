@@ -1,31 +1,27 @@
-
-
 <?php
 /*
- * Plugin Name: WooCommerce QuickPay Payment Gateway
- * Plugin URI: https://quickpay.sd
- * Description: Take ebs credit card payments on your store.
- * Author: Ashraf Eltayeb
- * Author URI: http://ashraf.cc
- * Version: beta
- */
-
-/*
- * This action hook registers our PHP class as a WooCommerce payment gateway
- */
-
-
-
-
+Plugin Name: Quickpay
+Description:Quickpay Payment Gateway for WooCommerce
+Version: beta
+Author: Ashraf Eltayeb
+Author URI: https://ashraf.cc
+Tags: payment, online payment, woocommerce,Quickpay, Sudan payment gateway
+Text Domain: woocommerce-extension
+Requires at least: 4.0.0
+Tested up to: 5.8.0
+Requires PHP: 7.1
+Stable tag: 5.6.2
+WC requires at least: 4.0.0
+WC tested up to: 5.5.2
+License: GNU General Public License v3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+*/
 
 add_filter( 'woocommerce_payment_gateways', 'quickpay_add_gateway_class' );
 function quickpay_add_gateway_class( $gateways ) {
     $gateways[] = 'WC_QuickPay_Gateway'; // your class name is here
     return $gateways;
 }
-
-
-
 
 add_action( 'plugins_loaded', 'quickpay_init_gateway_class' );
 
@@ -181,14 +177,7 @@ function quickpay_init_gateway_class() {
                 'result' => 'success',
                 'redirect' => $redirect_url
             );
-
-//            wc_add_notice( $response );
-
-
-
         }
-
-
         function quick_get_pages($title = false, $indent = true) {
             $wp_pages = get_pages('sort_column=menu_order');
             $page_list = array();
@@ -209,12 +198,7 @@ function quickpay_init_gateway_class() {
             }
             return $page_list;
         }
-
-
-        }
-
-
-
+    }
 }
 
 add_action( 'init', 'woocommerce_process_thawani_payment' );
@@ -235,9 +219,36 @@ function woocommerce_process_thawani_payment() {
 
         $order = wc_get_order($order_id);
 
-       $header = [
-                   'Content-Type' => 'application/x-www-form-urlencoded',
-               ];
+        $order_items = $order->get_items();
+
+        foreach( $order_items as $item_id => $item ){
+
+            // methods of WC_Order_Item class
+
+            // The element ID can be obtained from an array key or from:
+            $item_id = $item->get_id();
+
+            // methods of WC_Order_Item_Product class
+
+            $item_name = $item->get_name(); // Name of the product
+            $item_type = $item->get_type(); // Type of the order item ("line_item")
+
+            $product_id = $item->get_product_id(); // the Product id
+            $wc_product = $item->get_product();    // the WC_Product object
+
+            // order item data as an array
+            $item_data = $item->get_data();
+            $name =  $item_data['name'];
+            $product_id =  $item_data['product_id'];
+            $variation_id =   $item_data['variation_id'];
+            $quantity =   $item_data['quantity'];
+            $total =   $item_data['total'];
+
+
+        }
+        $header = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
         $url = 'https://quickpay.sd/cpayment/exec/getOrderStatus';
         $data_get = "cln=".$cln."&order_id=".$sev_order_id."&session_id=".$session_id;
 
@@ -256,23 +267,20 @@ function woocommerce_process_thawani_payment() {
 
         $response = json_decode($ch_result, true);
         $sever_status = $response['status'];
-
-         if( $sever_status =='completed'){
-             $order->payment_complete();
-             $order->add_order_note('QuickPay payment successful.');
-             $woocommerce -> cart -> empty_cart();
-             wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "order placed successfully", 'success' );
-         }else if($sever_status =='failed'){
-             $order->add_order_note('The QuicPay transaction has been declined.');
-             wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been declined.", 'error' );
-         }else {
-             wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been Cancel.", 'error' );
-         }
-
-
-
-
-                }
-
+//completed
+        if( $sever_status =='completed'){
+            $order->payment_complete();
+            $order->add_order_note('QuickPay payment successful.');
+            $woocommerce -> cart -> empty_cart();
+            wc_mail( get_option('admin_email'), "[Success] Quickpay - Order #" . $order_id, "مرحياً!<br />عملية الدفع تمت بنجاح<br /><br />تفاصيل العملية<br />===========<br />" . 'إسم المنتج :' .$name .'<br />'.'ID :' .$product_id . '<br />'.'الكمية :' .$quantity . '<br />'.'مجموع المبلغ :' .$total, $headers = "Content-Type: text/htmlrn", $attachments = "" );
+            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "order placed successfully", 'success' );
+        }else if($sever_status =='failed'){
+            $order->add_order_note('The QuicPay transaction has been declined.');
+            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been declined.", 'error' );
+        }else {
+            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been Cancel.", 'error' );
+        }
+    }
 }
+
 
