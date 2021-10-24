@@ -267,9 +267,10 @@ function woocommerce_process_thawani_payment() {
 
         $response = json_decode($ch_result, true);
         $sever_status = $response['status'];
+        wc_add_notice( $sever_status);
 //completed
         if( $sever_status =='completed'){
-            $order->payment_complete();
+            $order->payment_complete('completed');
             $order->add_order_note('QuickPay payment successful.');
             $woocommerce -> cart -> empty_cart();
             wc_mail( get_option('admin_email'), "[Success] Quickpay - Order #" . $order_id, "مرحياً!<br />عملية الدفع تمت بنجاح<br /><br />تفاصيل العملية<br />===========<br />" . 'إسم المنتج :' .$name .'<br />'.'ID :' .$product_id . '<br />'.'الكمية :' .$quantity . '<br />'.'مجموع المبلغ :' .$total, $headers = "Content-Type: text/htmlrn", $attachments = "" );
