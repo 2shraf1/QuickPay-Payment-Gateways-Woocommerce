@@ -172,7 +172,7 @@ function quickpay_init_gateway_class() {
             curl_close( $ch );
 
 
-            $redirect_url = plugin_dir_url(__FILE__).'payForm.php?'.'cln='.$cln.'&order_id='.$serv_order_id.'&session_id='.$session_id;
+            $redirect_url = plugin_dir_url(__FILE__).'payForm.php?'.'cln='.$cln.'&order_id='.$serv_order_id.'&session_id='.$session_id.'&additionalData='.$order;
             return array(
                 'result' => 'success',
                 'redirect' => $redirect_url
