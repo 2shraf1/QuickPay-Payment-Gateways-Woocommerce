@@ -129,7 +129,7 @@ function quickpay_init_gateway_class() {
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ];
 
-            $data = "cln=".$cln."&amount=".$amount."&url_app=".$url_app."&url_can=".$url_can."&url_dec=".$url_dec;
+            $data = "cln=".$cln."&amount=".$amount."&url_app=".$url_app."&url_can=".$url_can."&url_dec=".$url_dec.'&additionalData='.$order_id;
             $url = $quickpay_api.'/corder';
             $ch = curl_init();
             curl_setopt( $ch, CURLOPT_URL,  $url );
@@ -172,7 +172,7 @@ function quickpay_init_gateway_class() {
             curl_close( $ch );
 
 
-            $redirect_url = plugin_dir_url(__FILE__).'payForm.php?'.'cln='.$cln.'&order_id='.$serv_order_id.'&session_id='.$session_id.'&additionalData='.$order_id;
+            $redirect_url = plugin_dir_url(__FILE__).'payForm.php?'.'cln='.$cln.'&order_id='.$serv_order_id.'&session_id='.$session_id;
             return array(
                 'result' => 'success',
                 'redirect' => $redirect_url
