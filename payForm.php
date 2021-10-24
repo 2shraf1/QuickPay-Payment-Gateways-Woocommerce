@@ -20,6 +20,8 @@ $cln        =  $_GET['cln'];
 $order_id   =$_GET['order_id'];
 $session_id = $_GET['session_id'];
 $additionalData = $_GET['additionalData'];
+
+
 ?>
 
 
@@ -27,7 +29,7 @@ $additionalData = $_GET['additionalData'];
     <input type="hidden" name="cln" value="<?php echo $cln; ?>"><br>
     <input type="hidden" name="order_id" value="<?php echo $order_id; ?>"><br>
     <input type="hidden" name="session_id" value="<?php echo $session_id; ?>"><br>
-    <input type="hidden" name="session_id" value="<?php echo $additionalData; ?>"><br>
+    <input type="hidden" name="additionalData" value="<?php echo $additionalData; ?>"><br>
 </form>
 
 
