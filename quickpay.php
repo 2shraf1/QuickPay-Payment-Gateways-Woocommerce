@@ -129,7 +129,7 @@ function quickpay_init_gateway_class() {
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ];
 
-            $data = "cln=".$cln."&amount=".$amount."&url_app=".$url_app."&url_can=".$url_can."&url_dec=".$url_dec.'&additionalData='.$order_id;
+            $data = "cln=".$cln."&amount=".$amount."&url_app=".$url_app."&url_can=".$url_can."&url_dec=".$url_dec."&additionalData=".$order_id;
             $url = $quickpay_api.'/corder';
             $ch = curl_init();
             curl_setopt( $ch, CURLOPT_URL,  $url );
@@ -271,15 +271,16 @@ function woocommerce_process_thawani_payment() {
 //completed
         if( $sever_status =='completed'){
             $order->update_status( 'completed' );
-            $order->add_order_note('QuickPay payment successful.');
+            $order->add_order_note('عملية الدفع إكتملت بنجاح');
             $woocommerce -> cart -> empty_cart();
             wc_mail( get_option('admin_email'), "[Success] Quickpay - Order #" . $order_id, "مرحياً!<br />عملية الدفع تمت بنجاح<br /><br />تفاصيل العملية<br />===========<br />" . 'إسم المنتج :' .$name .'<br />'.'ID :' .$product_id . '<br />'.'الكمية :' .$quantity . '<br />'.'مجموع المبلغ :' .$total, $headers = "Content-Type: text/htmlrn", $attachments = "" );
             wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "order placed successfully", 'success' );
         }else if($sever_status =='failed'){
             $order->add_order_note('The QuicPay transaction has been declined.');
-            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been declined.", 'error' );
+            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "عفواً: حدث خطاء العملية لم تكتمل !", 'error' );
         }else {
-            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "However, the transaction has been Cancel.", 'error' );
+            wc_add_notice( __('Thank you for shopping with us.', 'woothemes') . "عفواً : تم الغاءالعملية", 'error' );
+			$woocommerce -> cart -> empty_cart();
         }
     }
 }
