@@ -267,7 +267,7 @@ function woocommerce_process_thawani_payment() {
 
         $response = json_decode($ch_result, true);
         $sever_status = $response['status'];
-        wc_add_notice( $sever_status);
+        //wc_add_notice( $sever_status);
 //completed
         if( $sever_status =='completed'){
             $order->update_status( 'completed' );
