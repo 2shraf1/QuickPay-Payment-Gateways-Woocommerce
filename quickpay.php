@@ -201,8 +201,8 @@ function quickpay_init_gateway_class() {
     }
 }
 
-add_action( 'init', 'woocommerce_process_thawani_payment' );
-function woocommerce_process_thawani_payment() {
+add_action( 'init', 'woocommerce_process_quickpay_payment' );
+function woocommerce_process_quickpay_payment() {
     global $woocommerce;
 
     //check for paramter passed on the url. This will access the success and cancel payment callback
